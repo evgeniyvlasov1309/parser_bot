@@ -3,7 +3,7 @@ from telethon import Button
 from data import config
 from loader import client
 
-CATEGORIES = ['смм', 'дизайн', 'wordpress', 'маркетинг']
+CATEGORIES = ['смм', 'дизайн', 'wordpress', 'маркетинг', 'frontend', 'дворник']
 
 category_keyboard = []
 sub_array = []
