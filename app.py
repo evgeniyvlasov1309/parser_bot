@@ -8,7 +8,6 @@ from utils.functions import get_messages_from_channels
 
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
-    """Send a message when the command /start is issued."""
     await bot.send_message(event.peer_id,
                            'Добро пожаловать!\n\nВведите ключевое слово для поиска вакансий, либо укажите категорию:',
                            buttons=category_keyboard)
@@ -32,6 +31,7 @@ async def button_request(event):
 
 @bot.on(events.NewMessage())
 async def echo(event):
+    print(event.peer_id)
     await event.respond(f'Получено сообщение: {event.text}')
     # messages = await get_messages_from_channels(config.CHANNELS, event.text)
     # messages_total = len(messages)
@@ -42,11 +42,18 @@ async def echo(event):
     # else:
     #     await event.respond('К сожалению, по заданному ключевому слову ничего не найдено')
 
+    # async def main():
+    #     print('hey')
+    #     client_info = await client.get_me()
+    #     bot_info = await bot.get_me()
+    #     await client.send_message('+79199520444', 'Привет сучара')
+    #     await bot.forward_messages(602781007, message)
+    #     async for message in client.iter_messages('+79199520444'):
+    #         print(message.stringify())
+    #         # await client.delete_messages(, message)
+    #         if message.message:
+    #             await bot.forward_messages(602781007, message)
 
-# async def main():
-#     await get_messages_from_channels(config.CHANNELS, 'frontend')
-
-
-if __name__ == '__main__':
-    client.run_until_disconnected()
-    # client.loop.run_until_complete(main())
+    if __name__ == '__main__':
+        print('hey')
+        client.run_until_disconnected()
