@@ -1,7 +1,5 @@
 from datetime import datetime, timedelta
 
-from telethon.tl.types import PeerChannel
-
 from classes.Settings import settings
 from loader import client
 

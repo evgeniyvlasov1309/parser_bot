@@ -2,7 +2,6 @@ import traceback
 
 from telethon import events
 
-from classes.Parser import Parser
 from classes.Settings import settings
 from keyboards.welcome_inline import welcome_keyboard
 from loader import bot

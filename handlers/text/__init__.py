@@ -5,7 +5,6 @@ from telethon.extensions import html
 
 from classes.Settings import settings
 from handlers.inline_buttons import users
-from keyboards.return_keyboard import get_return_keyboard
 from keyboards.welcome_inline import welcome_keyboard
 from loader import bot
 
