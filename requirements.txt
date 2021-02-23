@@ -1,2 +1,4 @@
 environs
 telethon
+gspread
+oauth2client

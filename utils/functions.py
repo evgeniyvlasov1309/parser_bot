@@ -41,7 +41,7 @@ async def send_messages(event, text, sender):
             else:
                 instance = await client.get_entity(message_sender.user_id)
             name = instance.username
-            message_text = f'Автор: <a href=\'https://t.me/{name}\'>{name}<a/>\nОпубликовано: {message.date.date()}\n\n' + message.text
+            message_text = f'Автор: <a href=\'https://t.me/{name}\'>{name}<a/>\n\n' + message.text
             await bot.send_message(sender, message_text, parse_mode=html)
     else:
-        await event.respond('К сожалению, по заданному ключевому слову ничего не найдено')
+        await event.respond('К сожалению, ничего не найдено')
