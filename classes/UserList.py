@@ -9,9 +9,9 @@ class UserList:
 
     def add_user(self, user):
         current_user = self.get_user(user.user_id)
+
         if current_user:
-            current_user = user
+            self.users.remove(current_user)
+            self.users.append(user)
         else:
             self.users.append(user)
-
-        return current_user

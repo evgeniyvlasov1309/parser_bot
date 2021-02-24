@@ -11,8 +11,12 @@ class Parser:
     async def get_messages_from_channels(self, channels):
         messages = []
         for channel in channels:
-            channel_messages = await self.parse_channel(channel)
-            messages.extend(channel_messages)
+            try:
+                channel_messages = await self.parse_channel(channel)
+                messages.extend(channel_messages)
+            except Exception:
+                continue
+
         return messages
 
     async def parse_channel(self, channel):
@@ -22,12 +26,12 @@ class Parser:
             if filter_result == 'too old':
                 break
             elif filter_result == 'ok':
-                modified_msg = await self.set_message_author(message)
+                modified_msg = await self.set_message_link(message)
                 messages.append(modified_msg)
 
         return messages
 
-    async def set_message_author(self, message):
+    async def set_message_link(self, message):
         channel_id = message.peer_id.channel_id
         channel = await client.get_entity(channel_id)
         message_link = f'{channel.username}/{message.id}'

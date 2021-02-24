@@ -43,6 +43,7 @@ async def button_request(event):
         user = User(user_info.id, user_info.username, category, '')
 
         users.add_user(user)
+
         await event.respond('Укажите временной диапазон для поиска', buttons=get_time_keyboard(settings.time))
     except Exception:
         print('Ошибка:\n', traceback.format_exc())
@@ -56,12 +57,13 @@ async def button_request(event):
         user_info = await bot.get_entity(event.original_update.peer)
 
         user = users.get_user(user_info.id)
+
         user.settings['time'] = time
+
         results = await user.show_results()
         results_len = results['length']
-        await event.respond(f'Найдено {results_len}', buttons=get_return_keyboard(results_len))
         for msg in results['items']:
-            await event.respond(msg, parse_mode=html)
+            await event.respond(msg, buttons=get_return_keyboard(results_len), parse_mode=html)
 
         await event.answer()
     except Exception:
