@@ -1,5 +1,11 @@
+import time
+
+from telethon.extensions import html
+
 from classes.Parser import Parser
 from classes.Settings import settings
+from keyboards.return_keyboard import get_return_keyboard
+from loader import bot
 
 
 class User:
@@ -14,7 +20,7 @@ class User:
         self.parsed_channels = []
         self.parser = Parser(self.settings)
         self.messages = []
-
+        self.loading = False
     # async def get_messages(self, channels):
     #     self.messages = await self.parser.get_messages_from_channels(channels)
     #     return []
@@ -23,6 +29,7 @@ class User:
         amount = settings.pagination
         for channel in self.channels:
             try:
+                print(channel)
                 channel_messages = await self.parser.parse_channel(channel)
                 self.messages.extend(channel_messages)
                 self.parsed_channels.append(channel)
@@ -37,10 +44,12 @@ class User:
         self.parsed_channels = []
 
     async def show_results(self):
-        amount = settings.pagination
+        if self.loading:
+            return
+        else:
+            self.loading = True
 
-        if len(self.messages) <= amount:
-            await self.get_paginate_messages()
+        amount = settings.pagination
 
         results = {
             'length': len(self.messages),
@@ -50,8 +59,13 @@ class User:
         if results['length'] < amount:
             amount = len(self.messages)
 
+        print(results['length'])
+
         for index in range(amount):
             elem = self.messages.pop(0)
-            results['items'].append(elem)
+            await bot.send_message(self.user_id, elem, buttons=get_return_keyboard(results['length']), parse_mode=html)
 
-        return results
+        if len(self.messages) <= amount:
+            await self.get_paginate_messages()
+
+        self.loading = False

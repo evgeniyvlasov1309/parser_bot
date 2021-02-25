@@ -34,9 +34,10 @@ async def start(event):
     try:
         user_info = await bot.get_entity(event.original_update.message.peer_id.user_id)
         user = users.get_user(user_info.id)
-        results = await user.show_results()
-        results_len = results['length']
-        for msg in results['items']:
-            await event.respond(msg, buttons=get_return_keyboard(results_len), parse_mode=html)
+        await user.show_results()
+        # results = await user.show_results()
+        # results_len = results['length']
+        # for msg in results['items']:
+        #     await event.respond(msg, buttons=get_return_keyboard(results_len), parse_mode=html)
     except Exception:
         print('Ошибка:\n', traceback.format_exc())
