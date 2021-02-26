@@ -6,6 +6,7 @@ from loader import client
 
 class Parser:
     def __init__(self, user_settings):
+        self.all_messages = []
         self.settings = user_settings
 
     async def get_messages_from_channels(self, channels):
@@ -26,6 +27,7 @@ class Parser:
             if filter_result == 'too old':
                 break
             elif filter_result == 'ok':
+                self.all_messages.append(message)
                 modified_msg = await self.set_message_link(message)
                 messages.append(modified_msg)
 
@@ -46,6 +48,10 @@ class Parser:
         native_md = md.replace(tzinfo=None)
         if offset_date > native_md:
             return 'too old'
+
+        for msg in self.all_messages:
+            if msg.raw_text == message.raw_text:
+                return 'fail'
 
         category_index = self.settings['category']
 

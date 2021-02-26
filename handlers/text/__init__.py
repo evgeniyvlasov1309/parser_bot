@@ -8,6 +8,7 @@ from handlers.inline_buttons import users
 from keyboards.return_keyboard import get_return_keyboard
 from keyboards.welcome_inline import welcome_keyboard
 from loader import bot
+from utils import send_message_to_admins
 
 
 @bot.on(events.NewMessage(pattern='Вернуться в начало'))
@@ -22,8 +23,7 @@ async def start(event):
 @bot.on(events.NewMessage(pattern='#ищу'))
 async def start(event):
     try:
-        for admin in settings.admins:
-            await bot.send_message(admin, event.text)
+        await send_message_to_admins(event.text)
         await event.respond('Вакансия отправлена на модерацию')
     except Exception:
         print('Ошибка:\n', traceback.format_exc())

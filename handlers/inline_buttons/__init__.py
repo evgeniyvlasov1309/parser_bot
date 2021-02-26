@@ -66,7 +66,5 @@ async def button_request(event):
         # results_len = results['length']
         # for msg in results['items']:
         #     await event.respond(msg, buttons=get_return_keyboard(results_len), parse_mode=html)
-
-        await event.answer()
     except Exception:
         print('Ошибка:\n', traceback.format_exc())

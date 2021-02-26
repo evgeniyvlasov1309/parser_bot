@@ -3,6 +3,7 @@ import traceback
 from telethon import events
 
 from classes.Settings import settings
+from filters import userFilter
 from keyboards.welcome_inline import welcome_keyboard
 from loader import bot
 
@@ -16,7 +17,7 @@ async def start(event):
         print('Ошибка:\n', traceback.format_exc())
 
 
-@bot.on(events.NewMessage(pattern='/start'))
+@bot.on(events.NewMessage(func=userFilter, pattern='/start'))
 async def start(event):
     try:
         await event.respond('Добро пожаловать!',
