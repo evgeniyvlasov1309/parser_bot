@@ -52,6 +52,10 @@ class Settings:
             self.users = []
             self.pagination = int(pagination[0])
 
+            diff_len = len(category_labels) - len(category_hashtags)
+            lost_part = [''] * diff_len
+            category_hashtags.extend(lost_part)
+
             for (index, category) in enumerate(category_labels):
                 self.categories.append({
                     'label': category_labels[index],
