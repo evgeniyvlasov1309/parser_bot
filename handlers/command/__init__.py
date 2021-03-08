@@ -16,8 +16,9 @@ async def start(event):
         user_info = await bot.get_entity(event.original_update.message.peer_id)
         user = users.get_user(user_info.id)
         settings.update()
+        user.add_message(event.message.id)
         msg = await event.respond('Настройки обновлены')
-        user.add_message(msg)
+        user.add_message(msg.id)
     except Exception:
         print('Ошибка:\n', traceback.format_exc())
 
