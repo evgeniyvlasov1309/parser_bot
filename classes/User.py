@@ -5,6 +5,7 @@ from classes.Parser import Parser
 from classes.Settings import settings
 from keyboards.return_keyboard import get_return_keyboard
 from loader import bot
+from utils import get_loading_message
 
 
 class User:
@@ -47,18 +48,22 @@ class User:
 
     async def get_paginate_messages(self):
         amount = settings.pagination
-        loading_msg = None
-        complete_msg = None
+        loading_msg = ''
 
         if len(self.channels) > 0:
             loading_msg = await bot.send_message(self.user_id, 'Ищем вакансии...', buttons=Button.clear())
             self.add_message(loading_msg.id)
+            await self.delete_last_msg()
 
-        for channel in self.channels:
+            loading_msg = await bot.send_message(self.user_id, 'Ищем вакансии...')
+            self.add_message(loading_msg.id)
+
+        for (index, channel) in enumerate(self.channels):
             try:
                 channel_messages = await self.parser.parse_channel(channel)
                 self.messages.extend(channel_messages)
                 self.parsed_channels.append(channel)
+                await bot.edit_message(self.user_id, loading_msg, get_loading_message(index))
                 if len(self.messages) > amount:
                     break
             except Exception:
