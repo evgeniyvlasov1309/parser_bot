@@ -7,7 +7,7 @@ directory = os.path.dirname(__file__)
 filename = os.path.join(directory, '..', 'utils', 'credentials.json')
 gc = gspread.service_account(filename=filename)
 
-sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1A3W5Lbs-R3ed6OdVMBkeqzIVEplWO6I9DLiche9zj_s/edit#gid=0")
+sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1mCxcuO7wuhuWdIV-crvhOI6DZTqQQdIZrixyQxxTlzQ/edit?usp=sharing")
 
 worksheet = sh.sheet1
 

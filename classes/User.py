@@ -70,7 +70,12 @@ class User:
                 continue
 
         messages_len = len(self.messages)
-        complete_msg = await bot.send_message(self.user_id, 'Поиск завершен', buttons=get_return_keyboard(messages_len))
+        if messages_len > 0:
+            finish_search_text = 'Поиск завершен'
+        else:
+            finish_search_text = 'Поиск завершен. По выбранным критериям вакансий не найдено'
+
+        complete_msg = await bot.send_message(self.user_id, finish_search_text, buttons=get_return_keyboard(messages_len))
         self.add_message(complete_msg.id)
         self.remove_parsed_channels()
 
