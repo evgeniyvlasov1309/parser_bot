@@ -5,7 +5,6 @@ from classes.Parser import Parser
 from classes.Settings import settings
 from keyboards.return_keyboard import get_return_keyboard
 from loader import bot
-from utils import get_loading_message
 
 
 class User:
@@ -18,10 +17,12 @@ class User:
         }
         self.channels = settings.channels.copy()
         self.parsed_channels = []
+        self.parsed_channels_amount = 0
         self.parser = Parser(self.settings)
         self.messages = []
         self.messages_ids = []
         self.user_messages_ids = []
+        self.messages_was_found = False
 
     def add_message(self, id):
         self.messages_ids.append(id)
@@ -61,21 +62,27 @@ class User:
         for (index, channel) in enumerate(self.channels):
             try:
                 channel_messages = await self.parser.parse_channel(channel)
+                if len(channel_messages):
+                    self.messages_was_found = True
+
                 self.messages.extend(channel_messages)
                 self.parsed_channels.append(channel)
-                await bot.edit_message(self.user_id, loading_msg, get_loading_message(index))
+                self.parsed_channels_amount = self.parsed_channels_amount + 1
+                percent = round(self.parsed_channels_amount / len(settings.channels) * 100)
+                await bot.edit_message(self.user_id, loading_msg, f'Ищем вакансии... {percent}%')
                 if len(self.messages) > amount:
                     break
             except Exception:
                 continue
 
         messages_len = len(self.messages)
-        if messages_len > 0:
-            finish_search_text = 'Поиск завершен'
-        else:
+        if messages_len == 0 and not self.messages_was_found:
             finish_search_text = 'Поиск завершен. По выбранным критериям вакансий не найдено'
+        else:
+            finish_search_text = 'Поиск завершен'
 
-        complete_msg = await bot.send_message(self.user_id, finish_search_text, buttons=get_return_keyboard(messages_len))
+        complete_msg = await bot.send_message(self.user_id, finish_search_text,
+                                              buttons=get_return_keyboard(messages_len))
         self.add_message(complete_msg.id)
         self.remove_parsed_channels()
 
