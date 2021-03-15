@@ -1,3 +1,5 @@
+import traceback
+
 from telethon import Button
 from telethon.extensions import html
 
@@ -73,6 +75,7 @@ class User:
                 if len(self.messages) > amount:
                     break
             except Exception:
+                print('Ошибка:\n', traceback.format_exc())
                 continue
 
         messages_len = len(self.messages)
@@ -88,12 +91,14 @@ class User:
 
     async def send_messages(self):
         for index in range(settings.pagination):
+            if len(self.messages) == 0:
+                return
+
             elem = self.messages.pop(0)
             msg = await bot.send_message(self.user_id, elem, parse_mode=html)
             self.add_message(msg.id)
 
     async def show_results(self):
         await self.send_messages()
-
         if len(self.messages) <= settings.pagination:
             await self.get_paginate_messages()
