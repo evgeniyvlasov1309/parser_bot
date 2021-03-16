@@ -60,16 +60,18 @@ class User:
 
             loading_msg = await bot.send_message(self.user_id, 'Ищем вакансии...')
             self.add_message(loading_msg.id)
+        else:
+            return
 
         for (index, channel) in enumerate(self.channels):
             try:
+                self.parsed_channels_amount = self.parsed_channels_amount + 1
+                self.parsed_channels.append(channel)
                 channel_messages = await self.parser.parse_channel(channel)
                 if len(channel_messages):
                     self.messages_was_found = True
 
                 self.messages.extend(channel_messages)
-                self.parsed_channels.append(channel)
-                self.parsed_channels_amount = self.parsed_channels_amount + 1
                 percent = round(self.parsed_channels_amount / len(settings.channels) * 100)
                 await bot.edit_message(self.user_id, loading_msg, f'Ищем вакансии... {percent}%')
                 if len(self.messages) > amount:
