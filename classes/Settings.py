@@ -7,7 +7,7 @@ directory = os.path.dirname(__file__)
 filename = os.path.join(directory, '..', 'utils', 'credentials.json')
 gc = gspread.service_account(filename=filename)
 
-sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1mCxcuO7wuhuWdIV-crvhOI6DZTqQQdIZrixyQxxTlzQ/edit?usp=sharing")
+sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/1mCxcuO7wuhuWdIV-crvhOI6DZTqQQdIZrixyQxxTlzQ/edit#gid=764376789")
 
 worksheet = sh.sheet1
 
@@ -28,16 +28,18 @@ class Settings:
             category_labels = worksheet.col_values(1)
             category_hashtags = worksheet.col_values(2)
             category_keywords = worksheet.col_values(3)
-            channels = worksheet.col_values(4)
-            time_labels = worksheet.col_values(5)
-            time_values = worksheet.col_values(6)
-            pagination = worksheet.col_values(7)
-            admins = worksheet.col_values(8)
-            users_username = worksheet.col_values(9)
-            users_access_time = worksheet.col_values(10)
+            category_exceptions = worksheet.col_values(4)
+            channels = worksheet.col_values(5)
+            time_labels = worksheet.col_values(6)
+            time_values = worksheet.col_values(7)
+            pagination = worksheet.col_values(8)
+            admins = worksheet.col_values(9)
+            users_username = worksheet.col_values(10)
+            users_access_time = worksheet.col_values(11)
             category_labels.pop(0)
             category_hashtags.pop(0)
             category_keywords.pop(0)
+            category_exceptions.pop(0)
             channels.pop(0)
             time_labels.pop(0)
             time_values.pop(0)
@@ -56,11 +58,16 @@ class Settings:
             lost_part = [''] * diff_len
             category_hashtags.extend(lost_part)
 
+            diff_len = len(category_labels) - len(category_exceptions)
+            lost_part = [''] * diff_len
+            category_exceptions.extend(lost_part)
+
             for (index, category) in enumerate(category_labels):
                 self.categories.append({
                     'label': category_labels[index],
                     'hashtags': category_hashtags[index].split(',', -1),
                     'keywords': category_keywords[index].split(',', -1),
+                    'exceptions': category_exceptions[index].split(',', -1),
                 })
 
             for (index, category) in enumerate(time_labels):

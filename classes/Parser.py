@@ -55,14 +55,24 @@ class Parser:
 
         category_index = self.settings['category']
 
+        exceptions = settings.categories[category_index]['exceptions']
+        source_text = message.raw_text.lower()
+        is_has_exception = False
+
+        for exception in exceptions:
+            if exception == '':
+                continue
+            if source_text.find(exception) != -1:
+                is_has_exception = True
+
         hashtags = settings.categories[category_index]['hashtags']
 
         is_has_hashtag = False
 
         for hashtag in hashtags:
             if hashtag == '':
-                return
-            if message.raw_text.find(hashtag) != -1:
+                continue
+            if source_text.find(hashtag) != -1:
                 is_has_hashtag = True
 
         keywords = settings.categories[category_index]['keywords']
@@ -71,11 +81,11 @@ class Parser:
 
         for keyword in keywords:
             if keyword == '':
-                return
-            if message.raw_text.find(keyword) != -1:
+                continue
+            if source_text.find(keyword) != -1:
                 is_has_keywords = True
 
-        if is_has_hashtag and is_has_keywords:
+        if is_has_hashtag and is_has_keywords and not is_has_exception:
             return 'ok'
         else:
             return 'fail'
