@@ -25,7 +25,7 @@ async def start(event):
         print('Ошибка:\n', traceback.format_exc())
 
 
-@bot.on(events.NewMessage(func=userFilter, pattern='/start'))
+@bot.on(events.NewMessage(func=userFilter, pattern=r'(?i)старт|/start'))
 async def start(event):
     try:
         user_info = await bot.get_entity(event.original_update.message.peer_id)

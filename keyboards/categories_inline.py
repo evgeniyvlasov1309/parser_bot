@@ -8,7 +8,7 @@ def get_categories_keyboard(categories):
     for (index, category) in enumerate(categories):
         sub_array.append(Button.inline(category['label'], data=f'category {index}'))
 
-        if len(sub_array) == 2:
+        if len(sub_array) == 3:
             category_keyboard.append(sub_array)
             sub_array = []
         elif index == len(categories) - 1:
