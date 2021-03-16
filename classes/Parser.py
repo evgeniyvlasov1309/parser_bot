@@ -60,6 +60,8 @@ class Parser:
         is_has_hashtag = False
 
         for hashtag in hashtags:
+            if hashtag == '':
+                return
             if message.raw_text.find(hashtag) != -1:
                 is_has_hashtag = True
 
@@ -68,6 +70,8 @@ class Parser:
         is_has_keywords = False
 
         for keyword in keywords:
+            if keyword == '':
+                return
             if message.raw_text.find(keyword) != -1:
                 is_has_keywords = True
 
