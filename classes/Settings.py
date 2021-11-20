@@ -54,6 +54,10 @@ class Settings:
             self.users = []
             self.pagination = int(pagination[0])
 
+            diff_len = len(category_labels) - len(category_keywords)
+            lost_part = [''] * diff_len
+            category_keywords.extend(lost_part)
+
             diff_len = len(category_labels) - len(category_hashtags)
             lost_part = [''] * diff_len
             category_hashtags.extend(lost_part)
