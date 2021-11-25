@@ -27,10 +27,18 @@ class Parser:
             if filter_result == 'too old':
                 break
             elif filter_result == 'ok':
-                self.all_messages.append(message)
+                modified_msg = await self.set_message_link(message)
+                messages.append(modified_msg)
                 messages.append(message)
 
         return messages
+
+    async def set_message_link(self, message):
+        channel_id = message.peer_id.channel_id
+        channel = await client.get_entity(channel_id)
+        message_link = f'{channel.username}/{message.id}'
+        message_text = f'Ссылка: <a href=\'https://t.me/{message_link}\'>https://t.me/{message_link}<a/>\n\n' + message.text
+        return message_text
 
     def filter_message(self, message):
         time_index = self.settings['time']
